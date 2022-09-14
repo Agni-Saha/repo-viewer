@@ -21,7 +21,8 @@ flutter pub run build_runner watch --delete-conflicting-outputs
    - Create Freezed Union to cover AuthFail scenarios
 
   E (infrastructure)
-    --> {GithubAuthenticator.dart} Purpose: Gets access token from Github and stores it in Credentials Object
+    --> {GithubAuthenticator.dart}
+    <br />  Purpose: Gets access token from Github and stores it in Credentials Object <br />
         1 - Create field values necessary to manage authentication with reference to the Oath Github documentation: 
           * [clientID], <br />
           * [clientSecret], <br />
@@ -31,7 +32,7 @@ flutter pub run build_runner watch --delete-conflicting-outputs
           * [revocationEndpoint], <br />
           * [redirectUrl],<br />
           <br />
-        2 - Create following methods passing in the above fields
+        2 - Create following methods passing in the above fields <br />
           * [getSignedInCredentials()] - Checks if user is signed in on app startup<br />
           * [refresh()] - Refreshes token if expired. Not necessary if tokens never expire on given API<br />
           * [isSignedIn()] - Facilitate signIn check throughout app<br />
