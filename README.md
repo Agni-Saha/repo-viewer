@@ -41,8 +41,8 @@ flutter pub run build_runner watch --delete-conflicting-outputs
           * [SignOut()] - Clears credentials from storage and deletes the accessKey from the API<br />
           <br />
         3 - Create [GithubOAuthHttpClient] class to facilitate communication with Oauth server so we receive JSON response (usually wont be necessary)
+        <br /><br />
     --> {SectureCredentialsStorage.dart} <br />
-          <br />
         4 - Create (SecureCredentialsStorage) class for local saving and caching - It should inmplement [read], [save] & [clear] methods inherited from an abstrat (CredentialsStorage) class which will also cover web scenarios
           <br />
 
