@@ -23,8 +23,8 @@ The simplest way to explain the folder structure is like this :- <br /><br />
 3. The "core" folder contains files that are not specific to any feature/sub-feature. Generally this contains the files that can be used in multiple files to refactor them.
 4. Every feature has it's own "shared" folder, although there's no such folder at the same level as other features, unlike the core.
 5. Every feature has these layers -
-    - domain layer: It basically contains the entities that we get from the API along with the files describing the type of failures.
-    - infrastructure layer: Here we work with the APIs, databases, dto (data transfer objects) and variants (if required). Basically this is the backend of our application. Here, we call APIs or get data from databases first. Then we convert the data into dart file (if it isn't dart, usually it's json) and return them.
-    - application layer: In here we create the state variants which are used by the presentation layer to display the data dynamically (declarative style coding). We call the methods of the infrastructure layer from here itself, and modify the state variants as per the value.
-    - presentation layer: This is where we create the UI, pages and widgets of this feature. It only accesses the application layer.
+    - **domain layer**: It basically contains the entities that we get from the API along with the files describing the type of failures.
+    - **infrastructure layer**: Here we work with the APIs, databases, dto (data transfer objects) and variants (if required). Basically this is the backend of our application. Here, we call APIs or get data from databases first. Then we convert the data into dart file (if it isn't dart, usually it's json) and return them.
+    - **application layer**: In here we create the state variants which are used by the presentation layer to display the data dynamically (declarative style coding). We call the methods of the infrastructure layer from here itself, and modify the state variants as per the value.
+    - **presentation layer**: This is where we create the UI, pages and widgets of this feature. It only accesses the application layer.
 
