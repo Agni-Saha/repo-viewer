@@ -12,9 +12,11 @@ A new Flutter project.
     3. Setup github.rest file
 2. Getting this code :-
     1. Copy the https clone link of this app
-    2. Create a .env file, similar to the .env.sample file created
-    3. Add your client id and client secret (that you get from Github OAuth app).
+    2. Get all dependencies by either saving (`ctrl/cmd + c`) the pubspec.yaml file, or running this command on terminal: `flutter pub get`
+    3. Create a .env file, similar to the .env.sample file created
+    4. Add your client id and client secret (that you get from Github OAuth app).
 3. Run the app from VSCode, or using the terminal with this command : ```flutter run```
+4. Make sure to run the build command before you actually run the app for safe measure.
 
 # Folder Structure
 The simplest way to explain the folder structure is like this :- <br /><br />
