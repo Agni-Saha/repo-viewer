@@ -1,0 +1,50 @@
+@baseUrl = https://api.github.com
+@token = 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
+// here we specify we want to receive the responses in html. This is appropriate for webview
+@acceptHeader = application/vnd.github.html+json
+
+// Retrieves repositories starred by user
+GET {{baseUrl}}/user/starred
+  ?page=1
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+If-None-Match: W/"5dde875805da008cf541b3b980c986ac6adbbe66c6175ca36fd942498dc4d683"
+
+###
+
+// Retrieves all repositories
+GET {{baseUrl}}/search/repositories
+  ?q=flutter
+  &page=1
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+
+// Retrieves repository readmes in html format
+GET {{baseUrl}}/repos/flutter/flutter/readme
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+
+// Enables user to star repositories - The API docs tells use to set the content-length to zero. 
+// We're not writing anything to the server after all
+PUT {{baseUrl}}/user/starred/resodev/chewie
+Authorization: bearer {{token}}
+Content-Length: 0
+Accept: {{acceptHeader}}
+
+###
+
+// Enables user to unstar repositories - Note its the same endpoint but this time we DELETE
+DELETE {{baseUrl}}/user/starred/resodev/chewie
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+
+// Checks if repository is already starred
+GET {{baseUrl}}/user/starred/resodev/chewie
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
