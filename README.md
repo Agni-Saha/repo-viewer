@@ -30,6 +30,7 @@ flutter pub run build_runner watch --delete-conflicting-outputs
           * [tokenEndpoint], <br />
           * [revocationEndpoint], <br />
           * [redirectUrl],<br />
+          <br />
         2 - Create following methods passing in the above fields
           * [getSignedInCredentials()] - Checks if user is signed in on app startup<br />
           * [refresh()] - Refreshes token if expired. Not necessary if tokens never expire on given API<br />
@@ -38,10 +39,12 @@ flutter pub run build_runner watch --delete-conflicting-outputs
           * [getAuthorizationUrl()] - Provides url which will pass user to Github authentication screen<br />
           * [handleAuthorizationResponse()] - On success, saves credentials to storage, on failure passes errors to AuthFailure objects<br />
           * [SignOut()] - Clears credentials from storage and deletes the accessKey from the API<br />
+          <br />
         3 - Create [GithubOAuthHttpClient] class to facilitate communication with Oauth server so we receive JSON response (usually wont be necessary)
-    --> {SectureCredentialsStorage.dart}
-    <br />
+    --> {SectureCredentialsStorage.dart} <br />
+          <br />
         4 - Create (SecureCredentialsStorage) class for local saving and caching - It should inmplement [read], [save] & [clear] methods inherited from an abstrat (CredentialsStorage) class which will also cover web scenarios
+          <br />
 
   F (application)
     --> {auth_notifier.dart}
