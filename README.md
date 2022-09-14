@@ -3,17 +3,18 @@
 A new Flutter project.
 
 # build runner command
-flutter pub run build_runner watch --delete-conflicting-outputs
+```flutter pub run build_runner watch --delete-conflicting-outputs```
 
 ## Workflow 
-1 - SETUP
-    1. - Clean Yaml and add dependencies (see comments in .yaml)
-    2. - Add custom linting rules to analysis_options.yaml - Helps ensure we use immutable state etc..
-
-2 - Setting up the Auth App
-    1. - Create an Oauth app on github
-    2. - Generate a personal access token for testing purposes
-    3. - Setup github.rest file
+1. Setting up the Auth App
+    1. Create an Oauth app on github
+    2. Generate a personal access token for testing purposes
+    3. Setup github.rest file
+2. Getting this code :-
+    1. Copy the https clone link of this app
+    2. Create a .env file, similar to the .env.sample file created
+    3. Add your client id and client secret (that you get from Github OAuth app).
+3. Run the app from VSCode, or using the terminal with this command : ```flutter run```
 
 # Folder Structure
 The simplest way to explain the folder structure is like this :- <br /><br />
