@@ -23,13 +23,13 @@ flutter pub run build_runner watch --delete-conflicting-outputs
   E (infrastructure)
     --> {GithubAuthenticator.dart} Purpose: Gets access token from Github and stores it in Credentials Object
         1 - Create field values necessary to manage authentication with reference to the Oath Github documentation: 
-          * [clientID], 
-          * [clientSecret], 
-          * [scopes], 
-          * [authorizationEndpoint], 
-          * [tokenEndpoint], 
-          * [revocationEndpoint], 
-          * [redirectUrl],
+          * [clientID], \n
+          * [clientSecret], \n
+          * [scopes], \n
+          * [authorizationEndpoint], \n
+          * [tokenEndpoint], \n
+          * [revocationEndpoint], \n
+          * [redirectUrl],\n
         2 - Create following methods passing in the above fields
           * [getSignedInCredentials()] - Checks if user is signed in on app startup
           * [refresh()] - Refreshes token if expired. Not necessary if tokens never expire on given API
