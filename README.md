@@ -7,13 +7,13 @@ flutter pub run build_runner watch --delete-conflicting-outputs
 
 ## Workflow 
 1 - SETUP
-  1.1. - Clean Yaml and add dependencies (see comments in .yaml)
-  1.2. - Add custom linting rules to analysis_options.yaml - Helps ensure we use immutable state etc..
+    1. - Clean Yaml and add dependencies (see comments in .yaml)
+    2. - Add custom linting rules to analysis_options.yaml - Helps ensure we use immutable state etc..
 
 2 - Setting up the Auth App
-  2.1. - Create an Oauth app on github
-  2.2. - Generate a personal access token for testing purposes
-  2.3. - Setup github.rest file
+    1. - Create an Oauth app on github
+    2. - Generate a personal access token for testing purposes
+    3. - Setup github.rest file
 
 # Folder Structure
 The simplest way to explain the folder structure is like this :- <br /><br />
