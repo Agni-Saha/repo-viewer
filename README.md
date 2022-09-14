@@ -31,16 +31,16 @@ flutter pub run build_runner watch --delete-conflicting-outputs
           * [revocationEndpoint], <br />
           * [redirectUrl],<br />
         2 - Create following methods passing in the above fields
-          * [getSignedInCredentials()] - Checks if user is signed in on app startup
-          * [refresh()] - Refreshes token if expired. Not necessary if tokens never expire on given API
-          * [isSignedIn()] - Facilitate signIn check throughout app
-          * [createGrant()] - Creates  access licence (grant) which is passed to getAuthorization URL method
-          * [getAuthorizationUrl()] - Provides url which will pass user to Github authentication screen
-          * [handleAuthorizationResponse()] - On success, saves credentials to storage, on failure passes errors to 
-          AuthFailure objects
-          * [SignOut()] - Clears credentials from storage and deletes the accessKey from the API
+          * [getSignedInCredentials()] - Checks if user is signed in on app startup<br />
+          * [refresh()] - Refreshes token if expired. Not necessary if tokens never expire on given API<br />
+          * [isSignedIn()] - Facilitate signIn check throughout app<br />
+          * [createGrant()] - Creates  access licence (grant) which is passed to getAuthorization URL method<br />
+          * [getAuthorizationUrl()] - Provides url which will pass user to Github authentication screen<br />
+          * [handleAuthorizationResponse()] - On success, saves credentials to storage, on failure passes errors to AuthFailure objects<br />
+          * [SignOut()] - Clears credentials from storage and deletes the accessKey from the API<br />
         3 - Create [GithubOAuthHttpClient] class to facilitate communication with Oauth server so we receive JSON response (usually wont be necessary)
     --> {SectureCredentialsStorage.dart}
+    <br />
         4 - Create (SecureCredentialsStorage) class for local saving and caching - It should inmplement [read], [save] & [clear] methods inherited from an abstrat (CredentialsStorage) class which will also cover web scenarios
 
   F (application)
@@ -144,16 +144,3 @@ flutter pub run build_runner watch --delete-conflicting-outputs
     
   B (INFRASTRUCTURE)
    - Create a corresponding DTO for each domain layer data class. Their purpose is to parse the json data we get from the server and return us a clean data class as defined in our application layer. We can copy the fields from the APPLICATION Data Classes and then use json_serializable to generate the 'fromJson' method we need. We just need to annotate in the correct json keys that correspond to our fields
-
-
-        
-
-
-
-
-
-    
-
-
-
-
