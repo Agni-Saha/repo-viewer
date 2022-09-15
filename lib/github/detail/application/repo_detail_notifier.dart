@@ -27,7 +27,10 @@ class RepoDetailState with _$RepoDetailState {
 }
 
 class RepoDetailNotifier extends StateNotifier<RepoDetailState> {
-  RepoDetailNotifier(this._repository) : super(const RepoDetailState.initial());
+  RepoDetailNotifier(this._repository)
+      : super(
+          const RepoDetailState.initial(),
+        );
 
   final RepoDetailRepository _repository;
 

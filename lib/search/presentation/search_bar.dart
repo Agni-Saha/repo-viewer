@@ -29,7 +29,7 @@ class SearchBar extends ConsumerStatefulWidget {
   final void Function() onSignoutButtonPressed;
 
   @override
-  _SearchBarState createState() => _SearchBarState();
+  ConsumerState<SearchBar> createState() => _SearchBarState();
 }
 
 class _SearchBarState extends ConsumerState<SearchBar> {
@@ -108,7 +108,9 @@ class _SearchBarState extends ConsumerState<SearchBar> {
           )
       ],
       actions: [
-        FloatingSearchBarAction.searchToClear(showIfClosed: false),
+        FloatingSearchBarAction.searchToClear(
+          showIfClosed: false,
+        ),
         FloatingSearchBarAction(
           child: IconButton(
             splashRadius: 18,
@@ -138,8 +140,9 @@ class _SearchBarState extends ConsumerState<SearchBar> {
           clipBehavior: Clip.hardEdge,
           child: Consumer(
             builder: (context, ref, child) {
-              final searchHistoryState =
-                  ref.watch(searchHistoryNotifierProvider);
+              final searchHistoryState = ref.watch(
+                searchHistoryNotifierProvider,
+              );
               return searchHistoryState.map(
                 // ^ Data case
                 data: (history) {
@@ -174,7 +177,8 @@ class _SearchBarState extends ConsumerState<SearchBar> {
                               onPressed: () {
                                 ref
                                     .read(
-                                        searchHistoryNotifierProvider.notifier)
+                                      searchHistoryNotifierProvider.notifier,
+                                    )
                                     .deleteSearchTerm(term);
                               },
                             ),
@@ -187,7 +191,9 @@ class _SearchBarState extends ConsumerState<SearchBar> {
                 },
                 // ^ Error case
                 error: (_) => ListTile(
-                  title: Text('Very unexpected error ${_.error}'),
+                  title: Text(
+                    'Very unexpected error ${_.error}',
+                  ),
                 ),
                 // ^ Loading
                 loading: (_) => const ListTile(

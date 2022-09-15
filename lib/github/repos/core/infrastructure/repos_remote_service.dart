@@ -6,13 +6,13 @@ import 'package:repo_viewer/github/core/infrastructure/github_headers.dart';
 import 'package:repo_viewer/github/core/infrastructure/github_headers_cache.dart';
 import 'package:repo_viewer/github/core/infrastructure/github_repo_dto.dart';
 
-// ^ Abstract class providing common functionality which is shared between starredRepos and searchRepos remote services
-
-// ^ A) Handles requests to the API for repoPages,
-// ^ B) it maintains a cache of previousHeader with which we add to our requests to check if a repoPage has been updated or not.
-// ^ C) it returns a 'RemoteResponse' which specifies whether query data is new, notUpdated or if there is no internet
-// ^ D) if data is new, it returns it as a list of DTO's
-// ^ E) it prevents searching beyond max available pages
+/*
+CORE:
+This is an abstract class, providing the functionality of both starred and searched
+repos feature. Its been implemented by starred_repos_remote_service.dart, that calls
+the getPage method, providing it with the API url and the datastructure of conversion
+Depending on the status code of the response, it returns a RemoteResponse object.
+*/
 
 abstract class ReposRemoteService {
   ReposRemoteService(
@@ -20,43 +20,44 @@ abstract class ReposRemoteService {
     this._headersCache,
   );
 
-  final Dio _dio; // facilitates HTTP requests
-  final GithubHeadersCache
-      _headersCache; // enables us to check if repo has been updated via eTag records, starred repos only
+  final Dio _dio;
+  final GithubHeadersCache _headersCache;
 
   // RemoteResponse tells repository whether the data is new, unmodified or if no connection
   Future<RemoteResponse<List<GithubRepoDTO>>> getPage({
-    // Which endpoint should we query?
     required Uri requestUri,
     // How should we parse the json response as the structure may differ for different endpoints
     required List<dynamic> Function(dynamic json) jsonDataSelector,
   }) async {
-    // What eTags have we already received from the API?
+    //getting the cached headers for etag
     final previousHeaders = await _headersCache.getHeaders(requestUri);
+
+    //making the request with the etag.
     try {
       final response = await _dio.getUri(
         requestUri,
         options: Options(
           headers: {
-            //  Here we're providing the server our previousHeaders eTag, if it matches we receive a 304
             'If-None-Match': previousHeaders?.eTag ?? '',
           },
         ),
       );
 
-      // ^ 304 RECEIVED (NOT MODIFIED)
       if (response.statusCode == 304) {
         return RemoteResponse.notModified(
-            maxPage: previousHeaders?.link?.maxPage ?? 0);
-
-        // ^ 200 RECEIVED (NEW DATA)
+          maxPage: previousHeaders?.link?.maxPage ?? 0,
+        );
       } else if (response.statusCode == 200) {
-        //  saving headers ready for next time
         final headers = GithubHeaders.parse(response);
         await _headersCache.saveHeaders(requestUri, headers);
+
         // Converts the data from json and saves each element as a GithubRepoDTO object
         final convertedData = jsonDataSelector(response.data)
-            .map((e) => GithubRepoDTO.fromJson(e as Map<String, dynamic>))
+            .map(
+              (e) => GithubRepoDTO.fromJson(
+                e as Map<String, dynamic>,
+              ),
+            )
             .toList();
         // returns the list of DTO's and maxPage
         return RemoteResponse.withNewData(

@@ -15,7 +15,7 @@ class NoResultsDisplay extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
-              MdiIcons.emoticonPoop,
+              MdiIcons.flaskEmpty,
               size: 96,
             ),
             Text(

@@ -37,18 +37,23 @@ class RepoDetailRepository {
       return right(
         await htmlRemoteResponse.when(
           // ^ NO CONNECTION
-          noConnection: () async => Fresh.no(await _localService
-              .getRepoDetails(fullRepoName)
-              .then((dto) => dto?.toDomain())),
+          noConnection: () async => Fresh.no(
+            await _localService.getRepoDetails(fullRepoName).then(
+                  (dto) => dto?.toDomain(),
+                ),
+          ),
           // ^ NOT MODIFIED
           notModified: (_) async {
             final cached = await _localService.getRepoDetails(fullRepoName);
             // We can only determine that the html content is not modified so we still query the
             // remote service for the starred status
             final starred = await _remoteService.getStarredStatus(fullRepoName);
-            final withUpdatedStarredField =
-                cached?.copyWith(starred: starred ?? false);
-            return Fresh.yes(withUpdatedStarredField?.toDomain());
+            final withUpdatedStarredField = cached?.copyWith(
+              starred: starred ?? false,
+            );
+            return Fresh.yes(
+              withUpdatedStarredField?.toDomain(),
+            );
           },
           // ^ NEW DATA
           withNewData: (html, _) async {
@@ -59,12 +64,16 @@ class RepoDetailRepository {
               starred: starred ?? false,
             );
             await _localService.upsertRepoDetails(dto);
-            return Fresh.yes(dto.toDomain());
+            return Fresh.yes(
+              dto.toDomain(),
+            );
           },
         ),
       );
     } on RestApiException catch (e) {
-      return left(GithubFailure.api(e.errorCode));
+      return left(
+        GithubFailure.api(e.errorCode),
+      );
     }
   }
 
@@ -78,7 +87,9 @@ class RepoDetailRepository {
       );
       return right(actionCompleted);
     } on RestApiException catch (e) {
-      return left(GithubFailure.api(e.errorCode));
+      return left(
+        GithubFailure.api(e.errorCode),
+      );
     }
   }
 }

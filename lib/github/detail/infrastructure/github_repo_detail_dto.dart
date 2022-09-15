@@ -38,7 +38,8 @@ class GithubRepoDetailDTO with _$GithubRepoDetailDTO {
 
   // This adds the fullName field back into the record
   factory GithubRepoDetailDTO.fromSembast(
-      RecordSnapshot<String, Map<String, dynamic>> snapshot) {
+    RecordSnapshot<String, Map<String, dynamic>> snapshot,
+  ) {
     final copiedMap = Map<String, dynamic>.from(snapshot.value);
     copiedMap['fullName'] = snapshot.key;
     return GithubRepoDetailDTO.fromJson(copiedMap);

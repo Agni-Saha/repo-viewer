@@ -3,9 +3,14 @@ import 'package:sembast/sembast.dart';
 
 import 'github_headers.dart';
 
-// ^ A) Creates a local storage space for Github Headers
-// ^ B) Converts headers objects to and from json for storage/retrieval
-// ^ C) Facilitates saving, retrieval and deletion of headers
+/*
+CORE:
+This is the class that we use to store the etag and page value of the server
+data into our sembast database in a store "header". It's a simple class where
+we have implemented three classes to save, get and delete the headers data.
+All these methods receive a URL and a header and we store them as key and value
+respectively in the database.
+*/
 
 class GithubHeadersCache {
   GithubHeadersCache(this._sembastDatabase);

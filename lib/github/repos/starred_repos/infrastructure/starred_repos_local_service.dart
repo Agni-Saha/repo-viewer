@@ -22,7 +22,14 @@ class StarredReposLocalService {
           dtos.mapIndexed((index, _) =>
               index + PaginationConfig.itemsPerPage * sembastPage),
         )
-        .put(_sembastDatabase.instance, dtos.map((e) => e.toJson()).toList());
+        .put(
+          _sembastDatabase.instance,
+          dtos
+              .map(
+                (e) => e.toJson(),
+              )
+              .toList(),
+        );
   }
 
   // paginates local database
@@ -39,7 +46,11 @@ class StarredReposLocalService {
       ),
     );
 
-    return records.map((e) => GithubRepoDTO.fromJson(e.value)).toList();
+    return records
+        .map(
+          (e) => GithubRepoDTO.fromJson(e.value),
+        )
+        .toList();
   }
 
   Future<int> getLocalPageCount() async {

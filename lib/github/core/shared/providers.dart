@@ -25,31 +25,46 @@ final starredReposNotifierProvider = StateNotifierProvider.autoDispose<
   ),
 );
 
-final starredReposRepositoryProvider = Provider((ref) => StarredReposRepository(
-      ref.watch(starredReposRemoteServiceProvider),
-      ref.watch(starredReposLocalServiceProvider),
-    ));
+final starredReposRepositoryProvider = Provider(
+  (ref) => StarredReposRepository(
+    ref.watch(starredReposRemoteServiceProvider),
+    ref.watch(starredReposLocalServiceProvider),
+  ),
+);
 
-final starredReposRemoteServiceProvider =
-    Provider((ref) => StarredReposRemoteService(
-          ref.watch(dioProvider),
-          ref.watch(githubHeadersCacheProvider),
-        ));
+final starredReposRemoteServiceProvider = Provider(
+  (ref) => StarredReposRemoteService(
+    ref.watch(dioProvider),
+    ref.watch(githubHeadersCacheProvider),
+  ),
+);
 
-final starredReposLocalServiceProvider =
-    Provider((ref) => StarredReposLocalService(ref.watch(sembastProvider)));
+final starredReposLocalServiceProvider = Provider(
+  (ref) => StarredReposLocalService(
+    ref.watch(sembastProvider),
+  ),
+);
 
-final githubHeadersCacheProvider =
-    Provider((ref) => GithubHeadersCache(ref.watch(sembastProvider)));
+final githubHeadersCacheProvider = Provider(
+  (ref) => GithubHeadersCache(
+    ref.watch(sembastProvider),
+  ),
+);
 
 // ^ SEARCHED REPO PROVIDERS
 
 final searchedReposNotifierProvider = StateNotifierProvider.autoDispose<
-        SearchedReposNotifier, PaginatedReposState>(
-    (ref) => SearchedReposNotifier(ref.watch(searchedReposRepositoryProvider)));
+    SearchedReposNotifier, PaginatedReposState>(
+  (ref) => SearchedReposNotifier(
+    ref.watch(searchedReposRepositoryProvider),
+  ),
+);
 
-final searchedReposRepositoryProvider = Provider((ref) =>
-    SearchedReposRepository(ref.watch(searchedReposRemoteServiceProvider)));
+final searchedReposRepositoryProvider = Provider(
+  (ref) => SearchedReposRepository(
+    ref.watch(searchedReposRemoteServiceProvider),
+  ),
+);
 
 final searchedReposRemoteServiceProvider = Provider(
   (ref) => SearchedReposRemoteService(

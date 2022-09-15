@@ -7,11 +7,14 @@ class SearchHistoryNotifier extends StateNotifier<AsyncValue<List<String>>> {
   final SearchHistoryRepository _repository;
 
   void watchSearchTerms({String? filter}) {
-    _repository.watchSearchTerms(filter: filter).listen((data) {
-      state = AsyncValue.data(data);
-    }, onError: (Object error) {
-      state = AsyncValue.error(error);
-    });
+    _repository.watchSearchTerms(filter: filter).listen(
+      (data) {
+        state = AsyncValue.data(data);
+      },
+      onError: (Object error) {
+        state = AsyncValue.error(error);
+      },
+    );
   }
 
   Future<void> addSearchTerm(String term) => _repository.addSearchTerm(term);

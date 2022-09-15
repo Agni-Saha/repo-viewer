@@ -22,8 +22,9 @@ class RepoTile extends StatelessWidget {
         tag: repo.fullName,
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
-          backgroundImage:
-              CachedNetworkImageProvider(repo.owner.avatarUrlSmall),
+          backgroundImage: CachedNetworkImageProvider(
+            repo.owner.avatarUrlSmall,
+          ),
         ),
       ),
       trailing: Column(
@@ -37,7 +38,9 @@ class RepoTile extends StatelessWidget {
         ],
       ),
       onTap: () {
-        AutoRouter.of(context).push(RepoDetailRoute(repo: repo));
+        AutoRouter.of(context).push(
+          RepoDetailRoute(repo: repo),
+        );
       },
     );
   }

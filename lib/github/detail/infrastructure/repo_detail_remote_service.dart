@@ -17,14 +17,16 @@ class RepoDetailRemoteService {
         Uri.https('api.github.com', '/repos/$fullRepoName/readme');
     final previousHeaders = await _headersCache.getHeaders(requestUri);
     try {
-      final response = await _dio.getUri(requestUri,
-          options: Options(
-            headers: {
-              'If-None-Match': previousHeaders?.eTag ?? '',
-            },
-            responseType:
-                ResponseType.plain, // We want plain text rather than JSON
-          ));
+      final response = await _dio.getUri(
+        requestUri,
+        options: Options(
+          headers: {
+            'If-None-Match': previousHeaders?.eTag ?? '',
+          },
+          responseType:
+              ResponseType.plain, // We want plain text rather than JSON
+        ),
+      );
       // ^ NOT MODIFIED
       if (response.statusCode == 304) {
         return const RemoteResponse.notModified(maxPage: 0);

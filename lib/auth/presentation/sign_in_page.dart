@@ -54,7 +54,9 @@ class SignInPage extends ConsumerWidget {
                               // ^ this triggers the next step of the signIn flow in AuthNotifier
                               onAuthorizationCodeRedirectAttempt:
                                   (redirectedUrl) {
-                                completer.complete(redirectedUrl);
+                                completer.complete(
+                                  redirectedUrl,
+                                );
                               },
                             ),
                           );
@@ -63,8 +65,8 @@ class SignInPage extends ConsumerWidget {
                       );
                     },
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.green)),
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                    ),
                     child: const Text('Sign In'),
                   )
                 ],

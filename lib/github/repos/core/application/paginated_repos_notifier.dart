@@ -8,73 +8,102 @@ import 'package:repo_viewer/github/core/infrastructure/pagination_config.dart';
 
 part 'paginated_repos_notifier.freezed.dart';
 
-// ^ ### PAGINATED_REPOS_STATE
+/*
+CORE: PaginatedReposState
+There are 4 state variants that we are possible. Initial state, before even loading
+or doing any stuff related to getting the pages. LoadInProgess state, that's when
+we are making a request to the API and it still hasn't returned anything. LoadInSuccess
+state, where we have successfully recieved all the repositories of a particular page.
+LoadInFailure state, that's when we couldn't receive the repos successfully. Depending
+on these states, the UI will behave accordingly.
+*/
 
 @freezed
 class PaginatedReposState with _$PaginatedReposState {
   const PaginatedReposState._();
 
-  // ^ INITIAL
-  // We'll pass an empty value but myState.repos would not be available if it was missing from one of the constructors
-  const factory PaginatedReposState.initial(Fresh<List<GithubRepo>> repos) =
-      _Initial;
+  const factory PaginatedReposState.initial(
+    Fresh<List<GithubRepo>> repos,
+  ) = _Initial;
 
-  // ^ LOAD IN PROGRESS
-  // itemsPerPage informs us how many loading indicators to render
   const factory PaginatedReposState.loadInProgress(
-      Fresh<List<GithubRepo>> repos, int itemsPerPage) = _LoadInProgress;
+    Fresh<List<GithubRepo>> repos,
+    int itemsPerPage,
+  ) = _LoadInProgress;
 
-  // ^ LOAD SUCCESS
-  // The server (or local storage) will need to tell us if there is another page
   const factory PaginatedReposState.loadSuccess(Fresh<List<GithubRepo>> repos,
       {required bool isNextPageAvailable}) = _LoadSuccess;
 
-  // ^ LOAD FAILURE
-  // We still need to return the existing repos
   const factory PaginatedReposState.loadFailure(
-      Fresh<List<GithubRepo>> repos, GithubFailure failure) = _LoadFailure;
+    Fresh<List<GithubRepo>> repos,
+    GithubFailure failure,
+  ) = _LoadFailure;
 }
 
-// ^ ### PAGINATED_REPOS_NOTIFIER
+/*
+CORE: PaginatedReposNotifier
+This is a stateNotifier class observing the states of PaginatedReposState.
+It is in here that we call the methods of infrastructure layer and actually
+make the API request.
 
-typedef RepositoryGetter
-    = Future<Either<GithubFailure, Fresh<List<GithubRepo>>>> Function(int page);
+LOGIC: _page
+The number of the page of repositories is defined by _page field. Initially it
+is set to 1. Only if we successfully receive the page, will we increment it.
 
-// ^ Facilitates calls to get more repos
-// ^ Instantiates and appends to a single list of Github repos
-// ^ Notifies presentation later of changes between loading, success and failure states
-// ^ Provides presentation layer list of repos and GithubFailur object if failure
+LOGIC:
+The previously loaded repositories are got from state.repos
+If we get a failure, then we only show what we already have. Otherwise we append
+what we already have with what we got now, and return that.
+*/
 
 class PaginatedReposNotifier extends StateNotifier<PaginatedReposState> {
-  // Instantiate with an empty list of repositories. Its fresh.yes because fresh.no triggers a popup
-  PaginatedReposNotifier() : super(PaginatedReposState.initial(Fresh.yes([])));
-
-  // normally you shouldnt have mutable fields in a stateNotifier but it fits our use-case in this instance
   int _page = 1;
+
+  PaginatedReposNotifier()
+      : super(
+          PaginatedReposState.initial(
+            Fresh.yes([]),
+          ),
+        );
 
   @protected
   void resetState() {
     _page = 1;
-    state = PaginatedReposState.initial(Fresh.yes([]));
+
+    state = PaginatedReposState.initial(
+      Fresh.yes([]),
+    );
   }
 
-  // Child classes specify as an argument what repository to get the next page from
   @protected
-  Future<void> getNextPage(RepositoryGetter getter) async {
+  Future<void> getNextPage(
+    Future<Either<GithubFailure, Fresh<List<GithubRepo>>>> Function(int page)
+        getter,
+  ) async {
+    // setting the initial state to loadInProgress after we have called this method
     state = PaginatedReposState.loadInProgress(
-        state.repos, PaginationConfig.itemsPerPage);
+      state.repos,
+      PaginationConfig.itemsPerPage,
+    );
+
+    // we make the request to get the API
     final failureOrRepos = await getter(_page);
+
+    // depending on what we get, we update the state
     state = failureOrRepos.fold(
       (l) => PaginatedReposState.loadFailure(state.repos, l),
       (r) {
         _page++;
         return PaginatedReposState.loadSuccess(
-            // Here we append the new ReposList to the existing one in the current state
-            r.copyWith(entity: [
+          // Here we append the new ReposList to the existing one in the current state
+          r.copyWith(
+            entity: [
               ...state.repos.entity,
               ...r.entity,
-            ]),
-            isNextPageAvailable: r.isNextPageAvailable ?? false);
+            ],
+          ),
+          isNextPageAvailable: r.isNextPageAvailable ?? false,
+        );
       },
     );
   }

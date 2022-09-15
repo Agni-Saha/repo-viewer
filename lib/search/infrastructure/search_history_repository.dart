@@ -28,7 +28,9 @@ class SearchHistoryRepository {
         // need to convert the snapshot to a list
         .onSnapshots(_sembastDatabase.instance)
         // reversed because we want latest search terms to be at top of list, not the end
-        .map((records) => records.reversed.map((e) => e.value).toList());
+        .map(
+          (records) => records.reversed.map((e) => e.value).toList(),
+        );
   }
 
   // ^ ### Public methods
@@ -57,7 +59,9 @@ class SearchHistoryRepository {
     final existingKey = await _store.findKey(
       dbClient,
       finder: Finder(
-        filter: Filter.custom((record) => record.value == term),
+        filter: Filter.custom(
+          (record) => record.value == term,
+        ),
       ),
     );
 
@@ -73,7 +77,9 @@ class SearchHistoryRepository {
     if (count > historyLength) {
       await _store.delete(
         dbClient,
-        finder: Finder(limit: count - historyLength),
+        finder: Finder(
+          limit: count - historyLength,
+        ),
       );
     }
   }
@@ -82,7 +88,9 @@ class SearchHistoryRepository {
     await _store.delete(
       dbClient,
       finder: Finder(
-        filter: Filter.custom((record) => record.value == term),
+        filter: Filter.custom(
+          (record) => record.value == term,
+        ),
       ),
     );
   }

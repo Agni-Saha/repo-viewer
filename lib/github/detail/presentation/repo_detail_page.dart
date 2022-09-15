@@ -48,8 +48,9 @@ class _RepoDetailPageState extends ConsumerState<RepoDetailPage> {
           loadSuccess: (repoDetail, _) {
             if (!repoDetail.isFresh) {
               showNoConnectionToast(
-                  "You're not online. Some information may be outdated",
-                  context);
+                "You're not online. Some information may be outdated",
+                context,
+              );
             }
           },
         );
@@ -80,7 +81,9 @@ class _RepoDetailPageState extends ConsumerState<RepoDetailPage> {
                 ),
               ),
               const SizedBox(width: 8),
-              Expanded(child: Text(widget.repo.name))
+              Expanded(
+                child: Text(widget.repo.name),
+              )
             ],
           ),
           actions: [
@@ -96,27 +99,29 @@ class _RepoDetailPageState extends ConsumerState<RepoDetailPage> {
               ),
               loadSuccess: (state) {
                 return IconButton(
-                    icon: Icon(
-                      !state.repoDetail.isFresh
-                          ? MdiIcons.starRemoveOutline
-                          : state.repoDetail.entity?.starred == true
-                              ? Icons.star
-                              : Icons.star_border_outlined,
-                    ),
-                    // ^ FAVORITE BUTTON
-                    onPressed: !state.repoDetail.isFresh
-                        ? null
-                        : () => ref
-                            .read(repoDetailNotifierProvider.notifier)
-                            .switchStarredStatus(state.repoDetail.entity!));
+                  icon: Icon(
+                    !state.repoDetail.isFresh
+                        ? MdiIcons.starRemoveOutline
+                        : state.repoDetail.entity?.starred == true
+                            ? Icons.star
+                            : Icons.star_border_outlined,
+                  ),
+                  // ^ FAVORITE BUTTON
+                  onPressed: !state.repoDetail.isFresh
+                      ? null
+                      : () => ref
+                          .read(repoDetailNotifierProvider.notifier)
+                          .switchStarredStatus(state.repoDetail.entity!),
+                );
               },
             ),
           ],
         ),
         body: state.map(
           initial: (_) => Container(),
-          loadInProgress: (_) =>
-              const Center(child: CircularProgressIndicator()),
+          loadInProgress: (_) => const Center(
+            child: CircularProgressIndicator(),
+          ),
           loadSuccess: (_) {
             if (_.repoDetail.entity == null) {
               return const NoResultsDisplay(
@@ -130,7 +135,9 @@ class _RepoDetailPageState extends ConsumerState<RepoDetailPage> {
                   if (navReq.url.startsWith('data:')) {
                     return NavigationDecision.navigate;
                   } else {
-                    url_launcher.launchUrl(Uri.parse(navReq.url));
+                    url_launcher.launchUrl(
+                      Uri.parse(navReq.url),
+                    );
                     return NavigationDecision.prevent;
                   }
                 },
@@ -151,7 +158,9 @@ class _RepoDetailPageState extends ConsumerState<RepoDetailPage> {
             }
           },
           loadFailure: (_) => Center(
-            child: Text(_.failure.toString()),
+            child: Text(
+              _.failure.toString(),
+            ),
           ),
         ),
       ),

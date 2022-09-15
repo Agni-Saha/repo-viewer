@@ -4,10 +4,18 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'github_headers.freezed.dart';
 part 'github_headers.g.dart';
 
-// ^ This class contains
-// ^ ...eTag which we can use to check if there have been server updates (calling from local storage if not)
-// ^ ...link from which we can extract the last page number when scrolling in our lists
-// ^ converts to and from JSON for local storage
+/* 
+CORE: 
+Whenever we make a request, we need to check two things :- whether the data we
+have already cached is up-to-date or not, and how many more pages of data can
+we recieve from server. This is the placeholder class for eTag and link header
+that achieve exactly those purposes.
+
+We can get the eTag simply from the header but getting the number of pages is quite
+complicated as we have to extract that from the link header. And that's why we have
+created a seperate class that has the maxPages field and extracts that from the link
+header.
+*/
 
 @freezed
 class GithubHeaders with _$GithubHeaders {
@@ -17,17 +25,13 @@ class GithubHeaders with _$GithubHeaders {
     PaginationLink? link,
   }) = _GithubHeaders;
 
-  // This constructor takes a Response object from dio, then constructs a GithubHeader object from it
   factory GithubHeaders.parse(Response response) {
-    // We get the spelling of key values 'Link' and 'Etag' testing queries via the REST extension
     final link = response.headers.map['Link']?[0];
     return GithubHeaders(
       eTag: response.headers.map['Etag']?[0],
       link: link == null
           ? null
-          // See factory constructor for PaginationLink class
           : PaginationLink.parse(
-              // The content of the Link field from where we want to extract the max page (converted to a list)
               link.split(','),
               // The URI from our own query for use if there is nomax page in the above
               requestUrl: response.requestOptions.uri.toString(),
@@ -39,11 +43,6 @@ class GithubHeaders with _$GithubHeaders {
   factory GithubHeaders.fromJson(Map<String, dynamic> json) =>
       _$GithubHeadersFromJson(json);
 }
-
-// Link format for reference
-// & link: <https://api.github.com/user/starred?page=2>; rel="next", <https://api.github.com/user/starred?page=8; rel="last"
-
-// ^ Parses link from API and extracts max page number into field
 
 @freezed
 class PaginationLink with _$PaginationLink {
@@ -57,7 +56,6 @@ class PaginationLink with _$PaginationLink {
   factory PaginationLink.parse(List<String> values,
       {required String requestUrl}) {
     return PaginationLink(
-      // We call a method to return our max page number
       maxPage: _extractPageNumber(
         values.firstWhere(
           (e) => e.contains('rel="last"'),
@@ -71,9 +69,11 @@ class PaginationLink with _$PaginationLink {
     // Get the expression by googling 'url regex javascript'. We prefix the string with 'r' to ensure the
     // backslashes are processed as part of the string
     final uriString = RegExp(
-            r'[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)')
-        .stringMatch(value);
-    return int.parse(Uri.parse(uriString!).queryParameters['page']!);
+      r'[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)',
+    ).stringMatch(value);
+    return int.parse(
+      Uri.parse(uriString!).queryParameters['page']!,
+    );
   }
 
   factory PaginationLink.fromJson(Map<String, dynamic> json) =>

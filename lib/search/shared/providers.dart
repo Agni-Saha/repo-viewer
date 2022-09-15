@@ -6,9 +6,13 @@ import '../infrastructure/search_history_repository.dart';
 
 final searchHistoryNotifierProvider =
     StateNotifierProvider<SearchHistoryNotifier, AsyncValue<List<String>>>(
-        (ref) => SearchHistoryNotifier(
-              ref.watch(searchHistoryRepositoryProvider),
-            ));
+  (ref) => SearchHistoryNotifier(
+    ref.watch(searchHistoryRepositoryProvider),
+  ),
+);
 
-final searchHistoryRepositoryProvider =
-    Provider((ref) => SearchHistoryRepository(ref.watch(sembastProvider)));
+final searchHistoryRepositoryProvider = Provider(
+  (ref) => SearchHistoryRepository(
+    ref.watch(sembastProvider),
+  ),
+);

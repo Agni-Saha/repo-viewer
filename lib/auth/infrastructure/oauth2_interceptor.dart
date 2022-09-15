@@ -25,7 +25,9 @@ class OAuth2Interceptor extends Interceptor {
       ..headers.addAll(
         credentials == null
             ? {}
-            : {'Authorization': 'bearer ${credentials.accessToken}'},
+            : {
+                'Authorization': 'bearer ${credentials.accessToken}',
+              },
       );
     handler.next(modifiedOptions);
   }

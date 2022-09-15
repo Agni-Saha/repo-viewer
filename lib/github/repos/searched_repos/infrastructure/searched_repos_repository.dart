@@ -16,17 +16,26 @@ class SearchedReposRepository {
     int page,
   ) async {
     try {
-      final remotePageItems =
-          await _remoteService.getSearchedReposPage(query, page);
+      final remotePageItems = await _remoteService.getSearchedReposPage(
+        query,
+        page,
+      );
       return right(
         remotePageItems.maybeWhen(
-          withNewData: (data, maxPage) =>
-              Fresh.yes(data.toDomain(), isNextPageAvailable: page < maxPage),
-          orElse: () => Fresh.no([], isNextPageAvailable: false),
+          withNewData: (data, maxPage) => Fresh.yes(
+            data.toDomain(),
+            isNextPageAvailable: page < maxPage,
+          ),
+          orElse: () => Fresh.no(
+            [],
+            isNextPageAvailable: false,
+          ),
         ),
       );
     } on RestApiException catch (e) {
-      return left(GithubFailure.api(e.errorCode));
+      return left(
+        GithubFailure.api(e.errorCode),
+      );
     }
   }
 }

@@ -31,9 +31,12 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
           // The below method intercepts the redirect URL which contains the token and prevents the redirect. This is
           // desirable because we are on a mobile device.
           navigationDelegate: (navReq) {
-            if (navReq.url
-                .startsWith(GithubAuthenticator.redirectUrl.toString())) {
-              widget.onAuthorizationCodeRedirectAttempt(Uri.parse(navReq.url));
+            if (navReq.url.startsWith(
+              GithubAuthenticator.redirectUrl.toString(),
+            )) {
+              widget.onAuthorizationCodeRedirectAttempt(
+                Uri.parse(navReq.url),
+              );
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;

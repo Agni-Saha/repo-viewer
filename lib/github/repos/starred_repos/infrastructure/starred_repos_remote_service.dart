@@ -5,10 +5,13 @@ import 'package:repo_viewer/github/core/infrastructure/github_repo_dto.dart';
 import 'package:repo_viewer/github/core/infrastructure/pagination_config.dart';
 import 'package:repo_viewer/github/repos/core/infrastructure/repos_remote_service.dart';
 
-// ^ A) Extends all the functionality of ReposRemoteService (which is shared with our searched repos feature)
-// ^ B) Specifies the following which differs from the searched repos feature
-// ^    - The endpoint URI to which we request the data
-// ^    - The part of json the which we convert
+/*
+CORE:
+A) Extends all the functionality of ReposRemoteService (which is shared with our searched repos feature)
+B) Specifies the following which differs from the searched repos feature
+   - The endpoint URI to which we request the data
+   - The part of json the which we convert
+*/
 
 class StarredReposRemoteService extends ReposRemoteService {
   StarredReposRemoteService(
@@ -17,7 +20,8 @@ class StarredReposRemoteService extends ReposRemoteService {
   ) : super(dio, headersCache);
 
   Future<RemoteResponse<List<GithubRepoDTO>>> getStarredReposPage(
-          int page) async =>
+    int page,
+  ) async =>
       super.getPage(
         requestUri: Uri.https(
           'api.github.com',

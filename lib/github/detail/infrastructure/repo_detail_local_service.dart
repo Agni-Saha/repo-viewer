@@ -27,18 +27,29 @@ class RepoDetailLocalService {
         );
 
     // RETURN LIST OF KEYS
-    final keys = await _store.findKeys(_sembastDatabase.instance,
-        finder: Finder(sortOrders: [
-          SortOrder(GithubRepoDetailDTO.lastUsedFieldName, false)
-        ]));
+    final keys = await _store.findKeys(
+      _sembastDatabase.instance,
+      finder: Finder(
+        sortOrders: [
+          SortOrder(
+            GithubRepoDetailDTO.lastUsedFieldName,
+            false,
+          ),
+        ],
+      ),
+    );
 
     // DELETE OLDEST KEY RECORDS IF EXCEEDING CACHE LIMIT ALONG WITH ENTRY FROM HEADERS CACHE
     if (keys.length > cacheSize) {
       final keysToRemove = keys.sublist(cacheSize);
       for (final key in keysToRemove) {
         await _store.record(key).delete(_sembastDatabase.instance);
-        await _headersCache
-            .deleteHeaders(Uri.https('api.github.com', '/repos/$key/readme'));
+        await _headersCache.deleteHeaders(
+          Uri.https(
+            'api.github.com',
+            '/repos/$key/readme',
+          ),
+        );
       }
     }
   }
@@ -47,8 +58,12 @@ class RepoDetailLocalService {
   Future<GithubRepoDetailDTO?> getRepoDetails(String fullRepoName) async {
     final record = _store.record(fullRepoName);
     // We update the lastUsed value which only exists in storage so the record isnt deleted for being old
-    await record.update(_sembastDatabase.instance,
-        {GithubRepoDetailDTO.lastUsedFieldName: Timestamp.now()});
+    await record.update(
+      _sembastDatabase.instance,
+      {
+        GithubRepoDetailDTO.lastUsedFieldName: Timestamp.now(),
+      },
+    );
     final recordSnapshot = await record.getSnapshot(_sembastDatabase.instance);
 
     if (recordSnapshot == null) {

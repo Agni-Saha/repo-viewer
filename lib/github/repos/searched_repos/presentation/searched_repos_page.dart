@@ -26,9 +26,6 @@ class _SearchedReposPageState extends ConsumerState<SearchedReposPage> {
           .read(searchedReposNotifierProvider.notifier)
           .getFirstSearchedReposPage(widget.searchTerm),
     );
-    // ref
-    //     .read(searchedReposNotifierProvider.notifier)
-    //     .getFirstSearchedReposPage(widget.searchTerm);
   }
 
   @override

@@ -35,7 +35,10 @@ class SecureCredentialsStorage implements CredentialsStorage {
   @override
   Future<void> save(Credentials credentials) {
     _cachedCredentials = credentials;
-    return _storage.write(key: _key, value: credentials.toJson());
+    return _storage.write(
+      key: _key,
+      value: credentials.toJson(),
+    );
   }
 
   @override

@@ -17,15 +17,16 @@ class GithubOAuthHttpClient extends http.BaseClient {
     return httpClient.send(request);
   }
 }
-
-// ^ Contains fields and methods necessary to implement the Github Oauth authorisation process. Saves and clears
-// ^ credentials to/from storage when user signs in or out
-// ^ Contains:
-// ^  Fields necessary to communicate with Github OAuth API
-// ^  Methods to...
-// ^    Check if user is logged in
-// ^    Login and save credentials to storage
-// ^    Logout and dispose of access token
+/*
+Contains fields and methods necessary to implement the Github Oauth authorisation process. Saves and clears
+credentials to/from storage when user signs in or out
+Contains:
+ Fields necessary to communicate with Github OAuth API
+ Methods to...
+   Check if user is logged in
+   Login and save credentials to storage
+   Logout and dispose of access token
+*/
 
 class GithubAuthenticator {
   GithubAuthenticator(this._credentialsStorage, this._dio);
@@ -37,14 +38,18 @@ class GithubAuthenticator {
   static const clientId = "5b56d1d97bb4fe1a0f3e";
   static const clientSecret = "c32a09486650bc660be9068124ee29cff17b0bcf";
   static const scopes = ['read:user', 'repo'];
-  static final authorizationEndpoint =
-      Uri.parse('https://github.com/login/oauth/authorize');
-  static final tokenEndpoint =
-      Uri.parse('https://github.com/login/oauth/access_token');
-  static final revocationEndpoint =
-      Uri.parse('https://api.github.com/applications/$clientId/token');
+  static final authorizationEndpoint = Uri.parse(
+    'https://github.com/login/oauth/authorize',
+  );
+  static final tokenEndpoint = Uri.parse(
+    'https://github.com/login/oauth/access_token',
+  );
+  static final revocationEndpoint = Uri.parse(
+    'https://api.github.com/applications/$clientId/token',
+  );
   static final redirectUrl = Uri.parse(
-      'http://localhost:3000/callback'); // The Authorization callback URL we defined in our Oauth app on the Github website
+    'http://localhost:3000/callback',
+  ); // The Authorization callback URL we defined in our Oauth app on the Github website
 
   // ^ Methods that return signin status
 
@@ -76,17 +81,24 @@ class GithubAuthenticator {
       await _credentialsStorage.save(refreshedCredentials);
       return right(refreshedCredentials);
     } on FormatException {
-      return left(const AuthFailure.server());
+      return left(
+        const AuthFailure.server(),
+      );
     } on AuthorizationException catch (e) {
-      return left(AuthFailure.server('${e.error}: ${e.description}'));
+      return left(
+        AuthFailure.server('${e.error}: ${e.description}'),
+      );
     } on PlatformException {
-      return left(const AuthFailure.storage());
+      return left(
+        const AuthFailure.storage(),
+      );
     }
   }
 
   // Returns signin status
-  Future<bool> isSignedIn() =>
-      getSignedInCredentials().then((credentials) => credentials != null);
+  Future<bool> isSignedIn() => getSignedInCredentials().then(
+        (credentials) => credentials != null,
+      );
 
   // ^ Methods that facilitate login
 
@@ -121,11 +133,17 @@ class GithubAuthenticator {
       await _credentialsStorage.save(httpClient.credentials);
       return right(unit);
     } on FormatException {
-      return left(const AuthFailure.server());
+      return left(
+        const AuthFailure.server(),
+      );
     } on AuthorizationException catch (e) {
-      return left(AuthFailure.server('${e.error}: ${e.description}'));
+      return left(
+        AuthFailure.server('${e.error}: ${e.description}'),
+      );
     } on PlatformException {
-      return left(const AuthFailure.storage());
+      return left(
+        const AuthFailure.storage(),
+      );
     }
   }
 
@@ -133,18 +151,23 @@ class GithubAuthenticator {
 
   Future<Either<AuthFailure, Unit>> signOut() async {
     try {
-      final accessToken = await _credentialsStorage
-          .read()
-          .then((credentials) => credentials!.accessToken);
-      final usernameAndPassword =
-          stringToBase64.encode('$clientId:$clientSecret');
+      final accessToken = await _credentialsStorage.read().then(
+            (credentials) => credentials!.accessToken,
+          );
+      final usernameAndPassword = stringToBase64.encode(
+        '$clientId:$clientSecret',
+      );
       // It's not strictly necessary to delete the old token, if you don't they'll just keep stacking up
       try {
-        await _dio.deleteUri(revocationEndpoint,
-            data: {'access_token': accessToken},
-            options: Options(
-              headers: {'Authorization': 'basic $usernameAndPassword'},
-            ));
+        await _dio.deleteUri(
+          revocationEndpoint,
+          data: {'access_token': accessToken},
+          options: Options(
+            headers: {
+              'Authorization': 'basic $usernameAndPassword',
+            },
+          ),
+        );
       } on DioError catch (e) {
         // We created this type manually as a dio extension - See core > infrastructure > dio_extensions.dart
         if (e.isNoConnectionError) {
@@ -155,7 +178,9 @@ class GithubAuthenticator {
       }
       return clearCredentialsStorage();
     } on PlatformException {
-      return left(const AuthFailure.storage());
+      return left(
+        const AuthFailure.storage(),
+      );
     }
   }
 
@@ -164,7 +189,9 @@ class GithubAuthenticator {
       await _credentialsStorage.clear();
       return right(unit);
     } on PlatformException {
-      return left(const AuthFailure.storage());
+      return left(
+        const AuthFailure.storage(),
+      );
     }
   }
 }

@@ -20,7 +20,6 @@ GithubRepoDTO _$GithubRepoDTOFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GithubRepoDTO {
-// We depend on the UserDTO not the User class from domain
   UserDTO get owner => throw _privateConstructorUsedError;
   String get name =>
       throw _privateConstructorUsedError; // Ensuring we never receive null
@@ -163,7 +162,6 @@ class _$_GithubRepoDTO extends _GithubRepoDTO {
   factory _$_GithubRepoDTO.fromJson(Map<String, dynamic> json) =>
       _$$_GithubRepoDTOFromJson(json);
 
-// We depend on the UserDTO not the User class from domain
   @override
   final UserDTO owner;
   @override
@@ -230,7 +228,7 @@ abstract class _GithubRepoDTO extends GithubRepoDTO {
   factory _GithubRepoDTO.fromJson(Map<String, dynamic> json) =
       _$_GithubRepoDTO.fromJson;
 
-  @override // We depend on the UserDTO not the User class from domain
+  @override
   UserDTO get owner;
   @override
   String get name;
