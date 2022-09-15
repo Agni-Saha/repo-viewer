@@ -19,7 +19,7 @@ A new Flutter project.
 4. Make sure to run the build command before you actually run the app for safe measure.
 
 # Folder Structure
-The simplest way to explain the folder structure is like this :- <br /><br />
+The simplest way to explain the folder structure is like this :-
 
 1. The lib folder is divided into numerous features of the app, each having a folder of their own.
 2. The files that are common between other features are stored in a "shared" folder. This generally contains the providers and any mathematical/logical/analytical codes that will help us ease our work.
