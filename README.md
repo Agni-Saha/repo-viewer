@@ -31,3 +31,10 @@ The simplest way to explain the folder structure is like this :- <br /><br />
     - **application layer**: In here we create the state variants which are used by the presentation layer to display the data dynamically (declarative style coding). We call the methods of the infrastructure layer from here itself, and modify the state variants as per the value.
     - **presentation layer**: This is where we create the UI, pages and widgets of this feature. It only accesses the application layer.
 
+## General Code flow of a feature
+It's somewhat like this :-
+
+1. The Domains are the entities that are shown in the UI.
+2. The Infrastructure layer makes the API request/ Database request and get the data. It converts those data into necessary dart entities and returns either a failure or the actual data (it might not even return anything, just notifying that everything is successful is more than enough in some cases).
+3. The Application Layer actually calls the Infrastruture layer and has the state variants depending upon the cases of the value returned from Infrastructure layer. It returns the state variants that has been updated.
+4. The Presentation layer accesses the providers/state-managements and calls the Application Layer's methods and depending upon the variants returned by the Application Layer, it shows the UI.
