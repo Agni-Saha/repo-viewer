@@ -1,6 +1,6 @@
 # repo_viewer
 
-A new Flutter project.
+A new Flutter project to view and read the Readme file of all Github repositories starred by the user. They can also star/unstar any repository present on github using the search feature. The users are authenticated from the Github OAuth2 API itself. The app has offline support as it caches the starred repositories in local database and checks whether the stored data is up-to-date with the server data or not, which if it is, then it simply shows the stored data, thus saving a lot of bandwidth.
 
 # build runner command
 ```flutter pub run build_runner watch --delete-conflicting-outputs```
@@ -10,7 +10,7 @@ A new Flutter project.
     1. Create an Oauth app on github
     2. Generate a personal access token for testing purposes
     3. Setup github.rest file
-2. Getting this code :-
+2. Getting and running this code :-
     1. Copy the https clone link of this app
     2. Get all dependencies by either saving (`ctrl/cmd + c`) the pubspec.yaml file, or running this command on terminal: `flutter pub get`
     3. Create a .env file, similar to the .env.sample file created
