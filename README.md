@@ -53,6 +53,7 @@ In the infrastructure layer, we are creating classes that will store the credent
 3. createGrant - method that creates a grant of OAuth2 facilitating the login process.
 4. getAuthorizationUrl - returns the url of webview where the user can go to get themselves authorized.
 5. handleAuthorizationResponse - exchanges the "code" query parameter with access token and saves that access token in the flutter_secure_storage.
+6. signOut - we request to the revokation endpoint with our credentials, that will delete the access token. We also delete the credentials from the secure_storage.
 
 The authentication feature flow is like this :-
 - auth_notifier is the file where the variants of authentication are created and it has a signIn() method that calls the various methods of infrastructure layer to facilitate the authentication process, returning a variant based on the results.
