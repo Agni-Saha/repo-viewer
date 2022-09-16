@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:oauth2/oauth2.dart';
 import 'package:repo_viewer/auth/domain/auth_failure.dart';
 import 'package:repo_viewer/core/infrastructure/dio_extensions.dart';
@@ -35,8 +36,8 @@ class GithubAuthenticator {
   final CredentialsStorage _credentialsStorage;
   final Dio _dio;
 
-  static const clientId = "5b56d1d97bb4fe1a0f3e";
-  static const clientSecret = "c32a09486650bc660be9068124ee29cff17b0bcf";
+  static final clientId = dotenv.env["CLIENT_ID"];
+  static final clientSecret = dotenv.env["CLIENT_SECRET"];
   static const scopes = ['read:user', 'repo'];
   static final authorizationEndpoint = Uri.parse(
     'https://github.com/login/oauth/authorize',
@@ -105,7 +106,7 @@ class GithubAuthenticator {
   // & NOTE: This grant contains the getAuthorizationUrl and handleAuthorizationResponse methods we use below
   AuthorizationCodeGrant createGrant() {
     return AuthorizationCodeGrant(
-      clientId,
+      clientId!,
       authorizationEndpoint,
       tokenEndpoint,
       secret: clientSecret,
@@ -138,7 +139,9 @@ class GithubAuthenticator {
       );
     } on AuthorizationException catch (e) {
       return left(
-        AuthFailure.server('${e.error}: ${e.description}'),
+        AuthFailure.server(
+          '${e.error}: ${e.description}',
+        ),
       );
     } on PlatformException {
       return left(

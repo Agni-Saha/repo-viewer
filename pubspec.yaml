@@ -31,6 +31,7 @@ dependencies:
   url_launcher: ^6.1.5
   http: ^0.13.5
   collection: ^1.16.0
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -42,5 +43,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-
   uses-material-design: true
+  assets:
+    - .env
